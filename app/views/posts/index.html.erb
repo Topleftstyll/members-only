@@ -1,36 +1,53 @@
 <div class="container mt-4">
-  <% if user_signed_in? %>
-    <%= render 'form', post: @post %>
-  <% end %>
-
-  <% @posts.each do |post| %>
-    <div class="row mb-4">
-      <div class="col"></div>
-
-      <div class="col-md-12 col-lg-8 col-xl-6">
+  <div class="row mb-4">
+    <div class="col">
+      <% if user_signed_in? %>
         <div class="card">
           <div class="card-header">
-            <% if user_signed_in? %>
-              <%= post.user.email %>
-            <% else %>
-              Anonymous(login to view name)
-            <% end %>
+            <%= current_user.email %>
           </div>
           <div class="card-body">
-            <h5 class="card-title"><%= post.title %></h5>
-            <p class="card-text"><%= post.body %></p>
-            <% if user_signed_in? && current_user.email == post.user.email %>
-              <div class="link-container">
-                <%= link_to "Show", post, class: "btn btn-primary" %>
-                <%= link_to "Edit", edit_post_path(post), class: "btn btn-primary" %>
-                <%= link_to "Delete", post, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
-              </div>
-            <% end %>
+            <h5 class="card-title">First Post</h5>
+            <h6 class="card-title"><%= current_user.posts.first.title %></h6>
+            <p class="card-text"><%= current_user.posts.first.body %></p>
+            <p class="card-text">User Posts Count: <%= current_user.posts.count %></p>
           </div>
         </div>
-      </div>
-
-      <div class="col"></div>
+      <% end %>
     </div>
-  <% end %>
+
+    <div class="col-md-12 col-lg-8 col-xl-6">
+      <% if user_signed_in? %>
+        <%= render 'form', post: @post %>
+      <% end %>
+
+      <% @posts.each do |post| %>
+        <div class="row mb-3">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <% if user_signed_in? %>
+                  <%= post.user.email %>
+                <% else %>
+                  Anonymous(login to view name)
+                <% end %>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><%= post.title %></h5>
+                <p class="card-text"><%= post.body %></p>
+                <% if user_signed_in? && current_user.email == post.user.email %>
+                  <div class="link-container">
+                    <%= link_to "Edit", edit_post_path(post), class: "btn btn-outline-primary" %>
+                    <%= link_to "Delete", post, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-primary" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col"></div>
+  </div>
 </div>
