@@ -1,32 +1,36 @@
-<p id="notice"><%= notice %></p>
+<div class="container mt-4">
+  <% if user_signed_in? %>
+    <%= render 'form', post: @post %>
+  <% end %>
 
-<h1>Root Page</h1>
-    <% @posts.each do |post| %>
-        <% if user_signed_in? %>
-          <h1>Poster: <%= post.user.email %></h1>
-        <% else %>
-          <h1>Poster: Anonymous</h1>
-        <% end %>
-        <h2>Title: <%= post.title %></h2>
-        <h3>Body: <%= post.body %></h3>
-        
-        <% if user_signed_in? && current_user.email == post.user.email %>
-          <div class="link-container">
-            <%= link_to "Show", post %>
-            <%= link_to "Edit", edit_post_path(post) %>
-            <%= link_to "Delete", post, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <% @posts.each do |post| %>
+    <div class="row mb-4">
+      <div class="col"></div>
+
+      <div class="col-md-12 col-lg-8 col-xl-6">
+        <div class="card">
+          <div class="card-header">
+            <% if user_signed_in? %>
+              <%= post.user.email %>
+            <% else %>
+              Anonymous(login to view name)
+            <% end %>
           </div>
-        <% end %>
+          <div class="card-body">
+            <h5 class="card-title"><%= post.title %></h5>
+            <p class="card-text"><%= post.body %></p>
+            <% if user_signed_in? && current_user.email == post.user.email %>
+              <div class="link-container">
+                <%= link_to "Show", post, class: "btn btn-primary" %>
+                <%= link_to "Edit", edit_post_path(post), class: "btn btn-primary" %>
+                <%= link_to "Delete", post, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
 
-
-        <!-- <td><%= post.title %></td>
-        <td><%= post.body %></td>
-        <td><%= link_to 'Show', post %></td>
-        <td><%= link_to 'Edit', edit_post_path(post) %></td>
-        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= link_to 'New Post', new_post_path %>
+      <div class="col"></div>
+    </div>
+  <% end %>
+</div>
